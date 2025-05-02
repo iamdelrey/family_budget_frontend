@@ -1,13 +1,16 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import AddCategoryPage from './pages/AddCategoryPage'
 import CategoriesPage from './pages/CategoriesPage'
 import LoginPage from './pages/LoginPage'
-
+import MePage from './pages/MePage'
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path='/login' element={<LoginPage />} />
 				<Route path='/categories' element={<CategoriesPage />} />
+				<Route path='/add-category' element={<AddCategoryPage />} />
+				<Route path='/me' element={<MePage />} />
 			</Routes>
 		</BrowserRouter>
 	)
