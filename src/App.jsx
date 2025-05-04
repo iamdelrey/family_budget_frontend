@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import AddCategoryPage from './pages/AddCategoryPage'
 import CategoriesPage from './pages/CategoriesPage'
+import EditCategoryPage from './pages/EditCategoryPage'
 import LoginPage from './pages/LoginPage'
 import MePage from './pages/MePage'
 function App() {
@@ -11,6 +12,7 @@ function App() {
 				<Route path='/categories' element={<CategoriesPage />} />
 				<Route path='/add-category' element={<AddCategoryPage />} />
 				<Route path='/me' element={<MePage />} />
+				<Route path='/edit-category/:id' element={<EditCategoryPage />} />
 			</Routes>
 		</BrowserRouter>
 	)

@@ -1,10 +1,12 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 function CategoriesPage() {
 	const [categories, setCategories] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -24,8 +26,6 @@ function CategoriesPage() {
 						},
 					}
 				)
-
-				console.log('Categories response:', response.data)
 
 				const data = Array.isArray(response.data)
 					? response.data
@@ -49,11 +49,17 @@ function CategoriesPage() {
 	return (
 		<div>
 			<h2>Категории бюджета</h2>
+
+			<button onClick={() => navigate('/add-category')}>
+				Добавить категорию
+			</button>
+
 			<ul>
 				{categories.length > 0 ? (
 					categories.map(cat => (
 						<li key={cat.id}>
-							<strong>{cat.name}</strong> — {cat.description}
+							<strong>{cat.name}</strong> — {cat.description}{' '}
+							<Link to={`/edit-category/${cat.id}`}>Редактировать</Link>
 						</li>
 					))
 				) : (
