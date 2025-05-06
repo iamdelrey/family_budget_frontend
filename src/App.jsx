@@ -3,6 +3,7 @@ import AddCategoryPage from './pages/AddCategoryPage'
 import CategoriesPage from './pages/CategoriesPage'
 import CurrentFamilyPage from './pages/CurrentFamilyPage'
 import EditCategoryPage from './pages/EditCategoryPage'
+import FamilyMembersPage from './pages/FamilyMembersPage'
 import LoginPage from './pages/LoginPage'
 import MePage from './pages/MePage'
 function App() {
@@ -15,6 +16,7 @@ function App() {
 				<Route path='/me' element={<MePage />} />
 				<Route path='/edit-category/:id' element={<EditCategoryPage />} />
 				<Route path='/family' element={<CurrentFamilyPage />} />
+				<Route path='/family/members' element={<FamilyMembersPage />} />
 			</Routes>
 		</BrowserRouter>
 	)
