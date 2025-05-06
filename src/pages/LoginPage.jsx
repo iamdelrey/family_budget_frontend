@@ -6,6 +6,7 @@ function LoginPage() {
 	const navigate = useNavigate()
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	const [error, setError] = useState(null)
 
 	const handleSubmit = async e => {
 		e.preventDefault()
@@ -17,41 +18,42 @@ function LoginPage() {
 
 			localStorage.setItem('access_token', response.data.access)
 			localStorage.setItem('refresh_token', response.data.refresh)
-
-			const meResponse = await axios.get('http://127.0.0.1:8000/api/me/', {
-				headers: {
-					Authorization: `Bearer ${response.data.access}`,
-				},
-			})
-			localStorage.setItem('username', meResponse.data.username)
+			localStorage.setItem('username', username)
 
 			navigate('/categories')
 		} catch (error) {
 			console.error(error)
-			alert('Ошибка входа!')
+			setError('Неверное имя пользователя или пароль.')
 		}
 	}
 
 	return (
-		<div>
-			<h1>Вход в систему</h1>
+		<div className='auth-container'>
+			<h2>Вход в аккаунт</h2>
 			<form onSubmit={handleSubmit}>
 				<input
 					type='text'
 					placeholder='Имя пользователя'
 					value={username}
 					onChange={e => setUsername(e.target.value)}
+					required
 				/>
-				<br />
-				<input
-					type='password'
-					placeholder='Пароль'
-					value={password}
-					onChange={e => setPassword(e.target.value)}
-				/>
-				<br />
+				<div className='password-wrapper'>
+					<input
+						type='password'
+						placeholder='Пароль'
+						value={password}
+						onChange={e => setPassword(e.target.value)}
+						required
+					/>
+					<span className='icon'>🔒</span>
+				</div>
 				<button type='submit'>Войти</button>
 			</form>
+			{error && <p className='error-text'>{error}</p>}
+			<p className='hint-text'>
+				Нет аккаунта? <a href='/register'>Создать</a>
+			</p>
 		</div>
 	)
 }
