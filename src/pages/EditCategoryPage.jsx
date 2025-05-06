@@ -7,22 +7,26 @@ function EditCategoryPage() {
 	const navigate = useNavigate()
 	const [name, setName] = useState('')
 	const [description, setDescription] = useState('')
+	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState(null)
 
 	useEffect(() => {
 		const fetchCategory = async () => {
 			try {
+				const token = localStorage.getItem('access_token')
 				const response = await axios.get(
 					`http://127.0.0.1:8000/api/categories/${id}/`,
 					{
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-						},
+						headers: { Authorization: `Bearer ${token}` },
 					}
 				)
 				setName(response.data.name)
 				setDescription(response.data.description)
-			} catch (error) {
-				console.error('Ошибка загрузки категории', error)
+			} catch (err) {
+				console.error(err)
+				setError('Ошибка загрузки категории')
+			} finally {
+				setLoading(false)
 			}
 		}
 		fetchCategory()
@@ -31,21 +35,21 @@ function EditCategoryPage() {
 	const handleSubmit = async e => {
 		e.preventDefault()
 		try {
+			const token = localStorage.getItem('access_token')
 			await axios.patch(
 				`http://127.0.0.1:8000/api/categories/${id}/`,
 				{ name, description },
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-					},
-				}
+				{ headers: { Authorization: `Bearer ${token}` } }
 			)
 			navigate('/categories')
-		} catch (error) {
-			console.error('Ошибка при обновлении категории', error)
-			alert('Не удалось обновить категорию')
+		} catch (err) {
+			console.error(err)
+			alert('Ошибка при обновлении категории')
 		}
 	}
+
+	if (loading) return <p>Загрузка...</p>
+	if (error) return <p style={{ color: 'red' }}>{error}</p>
 
 	return (
 		<div>
