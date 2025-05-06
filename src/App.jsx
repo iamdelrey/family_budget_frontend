@@ -8,6 +8,7 @@ import InviteCodePage from './pages/InviteCodePage'
 import JoinFamilyPage from './pages/JoinFamilyPage'
 import LoginPage from './pages/LoginPage'
 import MePage from './pages/MePage'
+import RegisterPage from './pages/RegisterPage'
 function App() {
 	return (
 		<BrowserRouter>
@@ -21,6 +22,7 @@ function App() {
 				<Route path='/family/members' element={<FamilyMembersPage />} />
 				<Route path='/join-family' element={<JoinFamilyPage />} />
 				<Route path='/invite-code' element={<InviteCodePage />} />
+				<Route path='/register' element={<RegisterPage />} />
 			</Routes>
 		</BrowserRouter>
 	)
