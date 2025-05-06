@@ -4,6 +4,8 @@ import CategoriesPage from './pages/CategoriesPage'
 import CurrentFamilyPage from './pages/CurrentFamilyPage'
 import EditCategoryPage from './pages/EditCategoryPage'
 import FamilyMembersPage from './pages/FamilyMembersPage'
+import InviteCodePage from './pages/InviteCodePage'
+import JoinFamilyPage from './pages/JoinFamilyPage'
 import LoginPage from './pages/LoginPage'
 import MePage from './pages/MePage'
 function App() {
@@ -17,6 +19,8 @@ function App() {
 				<Route path='/edit-category/:id' element={<EditCategoryPage />} />
 				<Route path='/family' element={<CurrentFamilyPage />} />
 				<Route path='/family/members' element={<FamilyMembersPage />} />
+				<Route path='/join-family' element={<JoinFamilyPage />} />
+				<Route path='/invite-code' element={<InviteCodePage />} />
 			</Routes>
 		</BrowserRouter>
 	)

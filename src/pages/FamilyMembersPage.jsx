@@ -5,6 +5,7 @@ function FamilyMembersPage() {
 	const [members, setMembers] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
+	const currentUsername = localStorage.getItem('username')
 
 	const fetchMembers = async () => {
 		try {
@@ -12,15 +13,13 @@ function FamilyMembersPage() {
 			const response = await axios.get(
 				'http://127.0.0.1:8000/api/family/members/',
 				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
+					headers: { Authorization: `Bearer ${token}` },
 				}
 			)
 			setMembers(response.data)
 		} catch (err) {
-			console.error('Ошибка загрузки участников семьи:', err)
-			setError('Не удалось загрузить участников семьи')
+			console.error(err)
+			setError('Ошибка загрузки участников')
 		} finally {
 			setLoading(false)
 		}
@@ -31,23 +30,18 @@ function FamilyMembersPage() {
 	}, [])
 
 	const handleRemove = async userId => {
-		if (!window.confirm('Удалить этого участника?')) return
+		if (!window.confirm('Удалить участника?')) return
 		try {
 			const token = localStorage.getItem('access_token')
 			await axios.post(
 				'http://127.0.0.1:8000/api/family/members/remove/',
 				{ user_id: userId },
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
+				{ headers: { Authorization: `Bearer ${token}` } }
 			)
-			alert('Участник удалён')
-			fetchMembers()
+			setMembers(members.filter(m => m.id !== userId))
 		} catch (err) {
-			console.error('Ошибка при удалении участника', err)
-			alert('Ошибка удаления участника')
+			console.error(err)
+			alert('Ошибка при удалении')
 		}
 	}
 
@@ -60,8 +54,15 @@ function FamilyMembersPage() {
 			<ul>
 				{members.map(member => (
 					<li key={member.id}>
-						{member.username} — {member.email} ({member.role}) &nbsp;
-						<button onClick={() => handleRemove(member.id)}>Удалить</button>
+						{member.username} ({member.role})
+						{member.username !== currentUsername && (
+							<button
+								onClick={() => handleRemove(member.id)}
+								style={{ marginLeft: '10px' }}
+							>
+								Удалить
+							</button>
+						)}
 					</li>
 				))}
 			</ul>

@@ -14,14 +14,18 @@ function LoginPage() {
 				username,
 				password,
 			})
-			console.log(response.data)
 
 			localStorage.setItem('access_token', response.data.access)
 			localStorage.setItem('refresh_token', response.data.refresh)
-			localStorage.getItem('access_token')
-			navigate('/categories')
 
-			// TODO: переадресация на страницу категорий
+			const meResponse = await axios.get('http://127.0.0.1:8000/api/me/', {
+				headers: {
+					Authorization: `Bearer ${response.data.access}`,
+				},
+			})
+			localStorage.setItem('username', meResponse.data.username)
+
+			navigate('/categories')
 		} catch (error) {
 			console.error(error)
 			alert('Ошибка входа!')
