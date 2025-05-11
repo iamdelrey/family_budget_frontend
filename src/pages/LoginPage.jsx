@@ -1,12 +1,18 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function LoginPage() {
 	const navigate = useNavigate()
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	const [showPassword, setShowPassword] = useState(false)
 	const [error, setError] = useState(null)
+
+	const togglePassword = () => {
+		setShowPassword(prev => !prev)
+	}
 
 	const handleSubmit = async e => {
 		e.preventDefault()
@@ -21,8 +27,8 @@ function LoginPage() {
 			localStorage.setItem('username', username)
 
 			navigate('/categories')
-		} catch (error) {
-			console.error(error)
+		} catch (err) {
+			console.error(err)
 			setError('Неверное имя пользователя или пароль.')
 		}
 	}
@@ -30,6 +36,7 @@ function LoginPage() {
 	return (
 		<div className='auth-container'>
 			<h2>Вход в аккаунт</h2>
+
 			<form onSubmit={handleSubmit}>
 				<input
 					type='text'
@@ -38,19 +45,25 @@ function LoginPage() {
 					onChange={e => setUsername(e.target.value)}
 					required
 				/>
-				<div className='password-wrapper'>
+
+				<div className='input-with-icon'>
 					<input
-						type='password'
+						type={showPassword ? 'text' : 'password'}
 						placeholder='Пароль'
 						value={password}
 						onChange={e => setPassword(e.target.value)}
 						required
 					/>
-					<span className='icon'>🔒</span>
+					<span className='eye-icon' onClick={togglePassword}>
+						{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+					</span>
 				</div>
+
 				<button type='submit'>Войти</button>
 			</form>
+
 			{error && <p className='error-text'>{error}</p>}
+
 			<p className='hint-text'>
 				Нет аккаунта? <a href='/register'>Создать</a>
 			</p>

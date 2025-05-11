@@ -1,3 +1,15 @@
+/* Включаем box-sizing для всех элементов */
+html {
+	box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+/* Общие базовые стили */
 body {
 	font-family: Arial, sans-serif;
 	background-color: #f3f4f6;
@@ -5,146 +17,131 @@ body {
 	padding: 0;
 }
 
-.container {
-	max-width: 500px;
-	margin: 40px auto;
-	background: #ffffff;
-	border-radius: 10px;
-	padding: 30px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/* Стили для страницы логина */
+.auth-container {
+	max-width: 400px;
+	margin: 60px auto;
+	padding: 20px; /* уменьшили паддинги */
+	background: linear-gradient(135deg, #f0f4f8, #ffffff);
+	border-radius: 14px;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+	text-align: center;
 }
 
-h1,
-h2 {
-	text-align: center;
+.auth-container h2 {
+	margin-bottom: 20px; /* чуть меньше пространства под заголовком */
+	font-size: 24px;
 	color: #111827;
 }
 
-form {
+.auth-container form {
 	display: flex;
 	flex-direction: column;
-	gap: 15px;
+	gap: 12px; /* сужен gap между полями */
 }
 
-input,
-select {
-	padding: 10px;
+.auth-container form input,
+.auth-container form button {
+	width: 100%;
+}
+
+.auth-container form input {
+	padding: 10px 0.75rem; /* уменьшили паддинги */
+	font-size: 16px;
 	border: 1px solid #d1d5db;
-	border-radius: 5px;
-	font-size: 16px;
+	border-radius: 8px;
+	background-color: #f9fafb;
+	transition: border-color 0.2s, background-color 0.2s;
 }
 
-button {
-	padding: 10px;
-	background-color: #2563eb;
-	color: white;
-	font-size: 16px;
-	border: none;
-	border-radius: 5px;
+.auth-container form input:focus {
+	outline: none;
+	border-color: #3b82f6;
+	background-color: #fff;
+}
+
+.input-with-icon {
+	position: relative;
+}
+
+.input-with-icon .eye-icon {
+	position: absolute;
+	right: 10px; /* чуть ближе к полю */
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 18px;
+	color: #6b7280;
 	cursor: pointer;
 }
 
-button:hover {
-	background-color: #1d4ed8;
-}
-
-ul {
-	list-style-type: none;
-	padding-left: 0;
-}
-
-li {
-	padding: 8px 0;
-	border-bottom: 1px solid #e5e7eb;
-}
-
-.error {
-	color: #dc2626;
-	text-align: center;
-}
-
-.success {
-	color: #16a34a;
-	text-align: center;
-}
-
-.link {
-	display: inline-block;
-	margin-top: 10px;
-	text-align: center;
-	color: #2563eb;
-}
-.member-list {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
-}
-
-.member-card {
-	background-color: #f9fafb;
-	border: 1px solid #d1d5db;
+.auth-container form button {
+	padding: 10px; /* уменьшили паддинги */
+	font-size: 16px;
+	background-color: #3b82f6;
+	color: white;
+	border: none;
 	border-radius: 8px;
-	padding: 16px;
-	transition: box-shadow 0.2s;
+	cursor: pointer;
+	transition: background-color 0.2s;
 }
 
-.member-card:hover {
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.auth-container form button:hover {
+	background-color: #2563eb;
 }
 
-.member-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 6px;
-}
-
-.member-email {
-	color: #4b5563;
+.auth-container .hint-text {
+	margin-top: 20px;
 	font-size: 14px;
-	margin: 0;
+	color: #6b7280;
+	text-align: center;
+	margin-bottom: 0px;
 }
 
-.role {
-	padding: 4px 10px;
-	border-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
+.auth-container .hint-text a {
+	color: #3b82f6;
+	text-decoration: none;
 }
 
-.role.head {
-	background-color: #dbeafe;
-	color: #1e3a8a;
+.auth-container .hint-text a:hover {
+	text-decoration: underline;
 }
 
-.role.member {
-	background-color: #e0f2fe;
-	color: #0369a1;
+.error-text {
+	color: #dc2626;
+	margin-top: 8px;
+	text-align: center;
 }
+
 .form-container {
 	max-width: 400px;
 	margin: 40px auto;
 	background: #ffffff;
-	padding: 30px;
+	padding: 20px;
 	border-radius: 12px;
 	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
 	text-align: center;
 }
 
 .form-container h2 {
-	margin-bottom: 20px;
+	margin-bottom: 16px;
+	font-size: 24px;
 	color: #111827;
 }
 
+.form-container form {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
 .form-container input {
-	display: block;
 	width: 100%;
-	padding: 12px;
-	margin-bottom: 15px;
+	padding: 10px;
 	font-size: 16px;
 	border: 1px solid #d1d5db;
 	border-radius: 8px;
 	background-color: #f9fafb;
+	transition: border-color 0.2s, background-color 0.2s;
 }
 
 .form-container input:focus {
@@ -155,12 +152,12 @@ li {
 
 .form-container button {
 	width: 100%;
-	padding: 12px;
+	padding: 10px;
 	font-size: 16px;
-	border: none;
-	border-radius: 8px;
 	background-color: #3b82f6;
 	color: white;
+	border: none;
+	border-radius: 8px;
 	cursor: pointer;
 	transition: background-color 0.2s;
 }
@@ -169,88 +166,37 @@ li {
 	background-color: #2563eb;
 }
 
-.error-text {
-	color: #dc2626;
-	margin-top: 10px;
-}
-.auth-container {
-	max-width: 400px;
-	margin: 60px auto;
-	padding: 40px;
-	background: linear-gradient(135deg, #f0f4f8, #ffffff);
-	border-radius: 14px;
-	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
-	text-align: center;
-}
-
-.auth-container h2 {
-	margin-bottom: 25px;
-	font-size: 24px;
-	color: #111827;
-}
-
-.auth-container form input {
-	width: 100%;
-	padding: 12px 14px;
-	margin-bottom: 16px;
-	font-size: 16px;
-	border: 1px solid #d1d5db;
-	border-radius: 8px;
-	background-color: #f9fafb;
-	transition: border-color 0.2s;
-}
-
-.auth-container form input:focus {
-	outline: none;
-	border-color: #3b82f6;
-	background-color: white;
-}
-
-.password-wrapper {
-	position: relative;
-}
-
-.password-wrapper .icon {
-	position: absolute;
-	top: 50%;
-	right: 12px;
-	transform: translateY(-50%);
-	font-size: 18px;
-	color: #6b7280;
-}
-
-.auth-container button {
-	width: 100%;
-	padding: 12px;
-	font-size: 16px;
-	background-color: #3b82f6;
-	color: white;
-	border: none;
-	border-radius: 8px;
-	cursor: pointer;
-	transition: background-color 0.2s;
-}
-
-.auth-container button:hover {
-	background-color: #2563eb;
-}
-
-.error-text {
-	color: #dc2626;
-	margin-top: 12px;
-}
-
-.hint-text {
-	margin-top: 16px;
+.form-container .hint-text {
+	margin-top: 20px;
 	font-size: 14px;
 	color: #6b7280;
+	text-align: center;
+	margin-bottom: 0px;
 }
 
-.hint-text a {
+.form-container .hint-text a {
 	color: #3b82f6;
 	text-decoration: none;
 }
 
-.hint-text a:hover {
+.form-container .hint-text a:hover {
 	text-decoration: underline;
+}
+
+.dashboard-button {
+	display: block;
+	text-align: center;
+	margin: 12px auto;
+	padding: 12px 20px;
+	background-color: #3b82f6;
+	color: white;
+	border-radius: 8px;
+	text-decoration: none;
+	width: 100%;
+	max-width: 300px;
+	transition: background-color 0.2s;
+	font-size: 16px;
+}
+.dashboard-button:hover {
+	background-color: #2563eb;
 }

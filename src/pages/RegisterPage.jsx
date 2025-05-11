@@ -51,7 +51,12 @@ function RegisterPage() {
 				/>
 				<button type='submit'>Зарегистрироваться</button>
 			</form>
+
 			{error && <p className='error-text'>{error}</p>}
+
+			<p className='hint-text'>
+				Уже есть аккаунт? <a href='/login'>Войти</a>
+			</p>
 		</div>
 	)
 }
