@@ -1,96 +1,151 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import {
+	Cell,
+	Legend,
+	Pie,
+	PieChart,
+	ResponsiveContainer,
+	Tooltip,
+} from 'recharts'
+import '../styles/DashboardPage.css'
+
+const COLORS = [
+	'#8884d8',
+	'#82ca9d',
+	'#ffc658',
+	'#ff7f50',
+	'#00c49f',
+	'#ffbb28',
+]
 
 function DashboardPage() {
-	const [family, setFamily] = useState(null)
-	const [members, setMembers] = useState([])
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState(null)
+	const [transactions, setTransactions] = useState([])
+	const [month, setMonth] = useState(new Date().getMonth() + 1)
+	const [year, setYear] = useState(new Date().getFullYear())
 
-	const username = localStorage.getItem('username')
+	const [income, setIncome] = useState(0)
+	const [expense, setExpense] = useState(0)
+	const [expenseByCategory, setExpenseByCategory] = useState([])
 
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetchTransactions = async () => {
 			try {
-				const token = localStorage.getItem('access_token')
-				const config = { headers: { Authorization: `Bearer ${token}` } }
-
-				const [familyRes, membersRes] = await Promise.all([
-					axios.get('http://127.0.0.1:8000/api/family/me/', config),
-					axios.get('http://127.0.0.1:8000/api/family/members/', config),
-				])
-
-				setFamily(familyRes.data)
-				setMembers(membersRes.data)
+				const response = await axios.get(
+					'http://127.0.0.1:8000/api/transactions/',
+					{
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+						},
+					}
+				)
+				const all = Array.isArray(response.data.results)
+					? response.data.results
+					: response.data
+				setTransactions(all)
 			} catch (err) {
-				console.error(err)
-				setError('Ошибка загрузки информации')
-			} finally {
-				setLoading(false)
+				console.error('Ошибка загрузки транзакций:', err)
+			}
+		}
+		fetchTransactions()
+	}, [])
+
+	useEffect(() => {
+		const filtered = transactions.filter(tr => {
+			const d = new Date(tr.date)
+			return d.getFullYear() === +year && d.getMonth() + 1 === +month
+		})
+
+		let inc = 0
+		let exp = 0
+		const categoryMap = {}
+
+		for (let t of filtered) {
+			const amount = parseFloat(t.amount)
+			if (t.type === 'income') {
+				inc += amount
+			} else {
+				exp += amount
+				categoryMap[t.category] = (categoryMap[t.category] || 0) + amount
 			}
 		}
 
-		fetchData()
-	}, [])
+		setIncome(inc)
+		setExpense(exp)
 
-	if (loading) return <p>Загрузка...</p>
-	if (error) return <p className='error'>{error}</p>
+		const categoryData = Object.entries(categoryMap).map(([name, value]) => ({
+			name,
+			value,
+		}))
+		setExpenseByCategory(categoryData)
+	}, [transactions, month, year])
 
 	return (
-		<div className='container'>
-			<h2>Добро пожаловать, {username}!</h2>
+		<div className='dashboard-container'>
+			<h2>Главная</h2>
 
-			{family && (
-				<div className='family-info'>
-					<h3>Семья: {family.name}</h3>
-					<p>
-						Глава семьи: <strong>{family.created_by}</strong>
-					</p>
-					<p>
-						Ваша роль:{' '}
-						<span className={`role ${family.role}`}>{family.role}</span>
-					</p>
-				</div>
-			)}
-
-			<hr />
-
-			<h3>Участники семьи</h3>
-			<div className='member-list'>
-				{members.map(member => (
-					<div key={member.id} className='member-card'>
-						<div className='member-header'>
-							<strong>{member.username}</strong>
-							<span className={`role ${member.role}`}>{member.role}</span>
-						</div>
-						<p className='member-email'>{member.email}</p>
-					</div>
-				))}
+			<div className='filters'>
+				<select value={month} onChange={e => setMonth(e.target.value)}>
+					{Array.from({ length: 12 }, (_, i) => (
+						<option key={i + 1} value={i + 1}>
+							{new Date(0, i).toLocaleString('ru', { month: 'long' })}
+						</option>
+					))}
+				</select>
+				<select value={year} onChange={e => setYear(e.target.value)}>
+					{[2024, 2025, 2026].map(y => (
+						<option key={y} value={y}>
+							{y}
+						</option>
+					))}
+				</select>
 			</div>
 
-			<hr />
+			<div className='summary-cards'>
+				<div className='card card-expense'>
+					<p className='label'>Расход</p>
+					<p className='value'>- {expense.toLocaleString()} ₽</p>
+				</div>
+				<div className='card card-budget'>
+					<p className='label'>Бюджет</p>
+					<p className='value'>0 ₽</p>
+				</div>
+				<div className='card card-income'>
+					<p className='label'>Доход</p>
+					<p className='value'>+ {income.toLocaleString()} ₽</p>
+				</div>
+				<div className='card card-balance'>
+					<p className='label'>На счетах</p>
+					<p className='value'>{(income - expense).toLocaleString()} ₽</p>
+				</div>
+			</div>
 
-			<div
-				style={{
-					marginTop: '20px',
-					display: 'flex',
-					gap: '12px',
-					flexWrap: 'wrap',
-				}}
-			>
-				<Link className='link' to='/categories'>
-					Категории бюджета
-				</Link>
-				<Link className='link' to='/family'>
-					Управление семьей
-				</Link>
-				<Link className='link' to='/transactions'>
-					Посмотреть все транзакции
-				</Link>
-				<Link to='/analytics' className='dashboard-button'>
-					Аналитика
-				</Link>
+			<div className='chart-container'>
+				<h3>Расходы по категориям</h3>
+				<div style={{ width: '100%', height: 300 }}>
+					<ResponsiveContainer>
+						<PieChart>
+							<Pie
+								data={expenseByCategory}
+								dataKey='value'
+								nameKey='name'
+								cx='50%'
+								cy='50%'
+								outerRadius={100}
+								label
+							>
+								{expenseByCategory.map((entry, index) => (
+									<Cell
+										key={`cell-${index}`}
+										fill={COLORS[index % COLORS.length]}
+									/>
+								))}
+							</Pie>
+							<Tooltip />
+							<Legend />
+						</PieChart>
+					</ResponsiveContainer>
+				</div>
 			</div>
 		</div>
 	)

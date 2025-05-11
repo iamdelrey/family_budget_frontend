@@ -1,0 +1,78 @@
+.dashboard-container {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 30px 20px;
+}
+
+.dashboard-container h2 {
+	text-align: center;
+	margin-bottom: 30px;
+	color: #1f2937;
+}
+
+.filters {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	margin-bottom: 25px;
+}
+
+.filters select {
+	padding: 10px 15px;
+	font-size: 16px;
+	border-radius: 8px;
+	border: 1px solid #d1d5db;
+	background-color: #f9fafb;
+}
+
+.summary-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 20px;
+}
+
+.card {
+	padding: 20px;
+	border-radius: 12px;
+	background-color: #ffffff;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.card .label {
+	font-size: 15px;
+	color: #6b7280;
+	margin-bottom: 8px;
+}
+
+.card .value {
+	font-size: 22px;
+	font-weight: 600;
+}
+
+.card-expense {
+	border-top: 5px solid #ef4444;
+}
+
+.card-income {
+	border-top: 5px solid #10b981;
+}
+
+.card-budget {
+	border-top: 5px solid #3b82f6;
+}
+
+.card-balance {
+	border-top: 5px solid #6366f1;
+}
+
+.chart-container {
+	margin-top: 40px;
+	background-color: white;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
