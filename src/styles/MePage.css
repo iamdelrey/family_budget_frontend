@@ -1,0 +1,14 @@
+.me-container {
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.me-card {
+	background: white;
+	padding: 20px;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	margin-top: 20px;
+	line-height: 1.6;
+}

@@ -66,7 +66,8 @@ function DashboardPage() {
 				inc += amount
 			} else {
 				exp += amount
-				categoryMap[t.category] = (categoryMap[t.category] || 0) + amount
+				const categoryName = t.category_name || 'Без категории'
+				categoryMap[categoryName] = (categoryMap[categoryName] || 0) + amount
 			}
 		}
 

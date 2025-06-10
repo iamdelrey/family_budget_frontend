@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import '../styles/CategoriesPage.css'
 
 function CategoriesPage() {
 	const [categories, setCategories] = useState([])
@@ -20,9 +21,7 @@ function CategoriesPage() {
 			const response = await axios.get(
 				'http://127.0.0.1:8000/api/categories/',
 				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
+					headers: { Authorization: `Bearer ${token}` },
 				}
 			)
 
@@ -45,7 +44,6 @@ function CategoriesPage() {
 
 	const handleDelete = async id => {
 		if (!window.confirm('Удалить эту категорию?')) return
-
 		try {
 			await axios.delete(`http://127.0.0.1:8000/api/categories/${id}/`, {
 				headers: {
@@ -59,30 +57,37 @@ function CategoriesPage() {
 		}
 	}
 
-	if (loading) return <p>Загрузка категорий...</p>
-	if (error) return <p style={{ color: 'red' }}>{error}</p>
-
 	return (
-		<div>
-			<h2>Категории бюджета</h2>
+		<div className='categories-container'>
+			<div className='categories-header'>
+				<h2>Категории бюджета</h2>
+				<button className='add-btn' onClick={() => navigate('/add-category')}>
+					+ Добавить категорию
+				</button>
+			</div>
 
-			<button onClick={() => navigate('/add-category')}>
-				Добавить категорию
-			</button>
-
-			<ul>
-				{categories.length > 0 ? (
-					categories.map(cat => (
-						<li key={cat.id}>
-							<strong>{cat.name}</strong> — {cat.description}{' '}
-							<Link to={`/edit-category/${cat.id}`}>Редактировать</Link>{' '}
-							<button onClick={() => handleDelete(cat.id)}>Удалить</button>
-						</li>
-					))
-				) : (
-					<p>Категории не найдены</p>
-				)}
-			</ul>
+			{loading ? (
+				<p>Загрузка категорий...</p>
+			) : error ? (
+				<p className='error'>{error}</p>
+			) : categories.length === 0 ? (
+				<p className='empty'>Категории не найдены</p>
+			) : (
+				<div className='category-grid'>
+					{categories.map(cat => (
+						<div key={cat.id} className='category-card'>
+							<div className='category-header'>
+								<h3>{cat.name}</h3>
+								<span className='category-actions'>
+									<Link to={`/edit-category/${cat.id}`}>✏️</Link>
+									<button onClick={() => handleDelete(cat.id)}>🗑️</button>
+								</span>
+							</div>
+							<p className='category-desc'>{cat.description}</p>
+						</div>
+					))}
+				</div>
+			)}
 		</div>
 	)
 }
