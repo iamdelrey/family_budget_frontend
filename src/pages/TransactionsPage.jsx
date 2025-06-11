@@ -16,15 +16,11 @@ function TransactionsPage() {
 				const token = localStorage.getItem('access_token')
 				const response = await axios.get(
 					'http://127.0.0.1:8000/api/transactions/',
-					{
-						headers: { Authorization: `Bearer ${token}` },
-					}
+					{ headers: { Authorization: `Bearer ${token}` } }
 				)
-
 				const data = Array.isArray(response.data)
 					? response.data
 					: response.data.results || []
-
 				setTransactions(data)
 			} catch (err) {
 				console.error('Ошибка загрузки транзакций:', err)
@@ -86,6 +82,10 @@ function TransactionsPage() {
 							</div>
 							<div className='tx-description'>
 								{tx.description || 'Без описания'}
+							</div>
+							{/* Новое поле: имя пользователя */}
+							<div className='tx-user'>
+								<strong>Пользователь:</strong> {tx.user_name}
 							</div>
 							<div className='tx-actions'>
 								<Link to={`/edit-transaction/${tx.id}`}>✏️ Редактировать</Link>

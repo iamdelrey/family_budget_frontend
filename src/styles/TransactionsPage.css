@@ -94,3 +94,14 @@
 	color: #666;
 	font-style: italic;
 }
+
+.tx-user {
+	margin: 8px 0;
+	font-size: 0.9rem;
+	color: #333;
+}
+
+.tx-user strong {
+	font-weight: 500;
+	margin-right: 4px;
+}
